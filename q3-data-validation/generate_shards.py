@@ -22,11 +22,11 @@ for shard_id in range(NUM_SHARDS):
         if is_invalid:
             kind = rng.choice(["bad_email", "missing_email", "missing_name"])
             if kind == "bad_email":
-                email = f"{name}{i}{domain}"        # no "@" — malformed
+                email = f"{name}{i}{domain}"
             elif kind == "missing_email":
-                email = ""                            # missing required field
+                email = ""
             else:
-                name = ""                             # missing required field
+                name = ""
                 email = f"{name}{i}@{domain}"
             invalid_count += 1
         else:
