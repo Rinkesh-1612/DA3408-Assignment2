@@ -1,0 +1,5 @@
+$ docker images spam-api
+REPOSITORY   TAG             IMAGE ID       CREATED        SIZE
+spam-api     multistage-v2   1a914c617535   25 hours ago   516MB
+spam-api     multistage      ac3770050375   2 days ago     513MB
+spam-api     naive           4d1835f82360   2 days ago     1.59GB

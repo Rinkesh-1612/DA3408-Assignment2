@@ -1,0 +1,27 @@
+$ kubectl get deployment spam-api -o wide
+NAME       READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES                   SELECTOR
+spam-api   2/2     2            2           25h   spam-api     spam-api:multistage-v2   app=spam-api
+
+$ kubectl get service spam-api
+NAME       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+spam-api   ClusterIP   10.103.19.250   <none>        80/TCP    25h
+
+$ kubectl get pods -o wide -l app=spam-api
+NAME                        READY   STATUS    RESTARTS   AGE   IP            NODE           NOMINATED NODE   READINESS GATES
+spam-api-7cf667b5bf-6mmsw   1/1     Running   0          25h   10.244.1.10   minikube-m02   <none>           <none>
+spam-api-7cf667b5bf-hvhcl   1/1     Running   0          25h   10.244.0.6    minikube       <none>           <none>
+
+$ kubectl get rs -l app=spam-api -o wide
+NAME                  DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES                   SELECTOR
+spam-api-77f4dcbc9b   0         0         0       25h   spam-api     spam-api:multistage      app=spam-api,pod-template-hash=77f4dcbc9b
+spam-api-7cf667b5bf   2         2         2       25h   spam-api     spam-api:multistage-v2   app=spam-api,pod-template-hash=7cf667b5bf
+
+$ kubectl rollout status deployment/spam-api
+deployment "spam-api" successfully rolled out
+
+$ kubectl rollout history deployment/spam-api
+deployment.apps/spam-api 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+

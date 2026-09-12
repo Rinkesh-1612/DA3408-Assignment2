@@ -1,0 +1,14 @@
+$ kubectl get pods -o wide -l batch.kubernetes.io/job-name=shard-validator-job
+NAME                          READY   STATUS      RESTARTS   AGE   IP           NODE           NOMINATED NODE   READINESS GATES
+shard-validator-job-0-zgpbc   0/1     Completed   0          25h   10.244.1.3   minikube-m02   <none>           <none>
+shard-validator-job-1-m6rg4   0/1     Completed   0          25h   10.244.0.3   minikube       <none>           <none>
+shard-validator-job-2-klc5f   0/1     Completed   0          25h   10.244.1.2   minikube-m02   <none>           <none>
+shard-validator-job-3-957xs   0/1     Completed   0          25h   10.244.1.4   minikube-m02   <none>           <none>
+shard-validator-job-4-nsz2w   0/1     Completed   0          25h   10.244.0.4   minikube       <none>           <none>
+shard-validator-job-5-jzfwz   0/1     Completed   0          25h   10.244.1.5   minikube-m02   <none>           <none>
+shard-validator-job-6-c5rgt   0/1     Completed   0          25h   10.244.1.7   minikube-m02   <none>           <none>
+shard-validator-job-7-k249r   0/1     Completed   0          25h   10.244.1.6   minikube-m02   <none>           <none>
+
+$ kubectl get job shard-validator-job
+NAME                  STATUS     COMPLETIONS   DURATION   AGE
+shard-validator-job   Complete   8/8           14s        25h

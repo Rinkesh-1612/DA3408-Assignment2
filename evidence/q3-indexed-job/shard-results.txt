@@ -1,0 +1,9 @@
+$ kubectl logs -l batch.kubernetes.io/job-name=shard-validator-job --prefix=true
+[pod/shard-validator-job-0-zgpbc/validator] RESULT shard_index=0 pod=shard-validator-job-0-zgpbc node=minikube-m02 total_rows=50 invalid_rows=10
+[pod/shard-validator-job-1-m6rg4/validator] RESULT shard_index=1 pod=shard-validator-job-1-m6rg4 node=minikube total_rows=50 invalid_rows=15
+[pod/shard-validator-job-2-klc5f/validator] RESULT shard_index=2 pod=shard-validator-job-2-klc5f node=minikube-m02 total_rows=50 invalid_rows=10
+[pod/shard-validator-job-3-957xs/validator] RESULT shard_index=3 pod=shard-validator-job-3-957xs node=minikube-m02 total_rows=50 invalid_rows=8
+[pod/shard-validator-job-4-nsz2w/validator] RESULT shard_index=4 pod=shard-validator-job-4-nsz2w node=minikube total_rows=50 invalid_rows=6
+[pod/shard-validator-job-5-jzfwz/validator] RESULT shard_index=5 pod=shard-validator-job-5-jzfwz node=minikube-m02 total_rows=50 invalid_rows=9
+[pod/shard-validator-job-6-c5rgt/validator] RESULT shard_index=6 pod=shard-validator-job-6-c5rgt node=minikube-m02 total_rows=50 invalid_rows=13
+[pod/shard-validator-job-7-k249r/validator] RESULT shard_index=7 pod=shard-validator-job-7-k249r node=minikube-m02 total_rows=50 invalid_rows=11
