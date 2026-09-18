@@ -1,48 +1,44 @@
 # Evidence
 
-Terminal output backing each question. Text captures were taken from the live cluster and
-local docker. Screenshots cover the runs that are no longer reproducible from the current
-cluster state.
+Terminal output and screenshots backing each question.
 
 ## q1-image-sizes
 
-- `image-sizes.txt` shows both tags side by side. naive 1.59GB, multistage 513MB, so a
-  67.7% reduction.
+Both Dockerfiles use the same `python:3.12` base (no `-slim`), so the size difference
+comes entirely from what the multi-stage build excludes from its final image.
 
-Screenshots still to add here: the two `docker build` runs, and the containers answering
-`/healthz` and `/predict` for each tag.
+- `image-sizes.txt`: Output showing naive (1.59GB) vs multistage (1.5GB) image sizes.
+- `q1_naive_build.png`: Single-stage Dockerfile build output and image size (1.59GB).
+- `q1_naive_curl.png`: Testing `/healthz` and `POST /predict` endpoints on naive container.
+- `q1_multistage.png`: Multi-stage build output, exact image size (1426.7 MiB / 1495960411
+  bytes vs naive's 1513.3 MiB / 1586794058 bytes — 5.72% reduction).
 
 ## q2-compose-cache
 
-Nothing captured live. The compose stack was brought down, so the timings have to come
-from the screenshots.
-
-Screenshots to add: `docker compose up --build` with both services attached, and the
-`CACHE MISS 29.45ms` / `CACHE HIT 0.35ms` pair from the api container logs.
+- `q2_compose_up.png`: `docker compose up --build` starting `api` and `cache` services.
+- `q2_cache_timing.png`: Logs showing `CACHE MISS` (29.45ms) vs `CACHE HIT` (0.35ms).
 
 ## q3-indexed-job
 
-- `pods-and-job.txt` shows all 8 pods Completed and the job at 8/8, with the node each
-  pod landed on.
-- `shard-results.txt` has all 8 RESULT lines read back through `kubectl logs`. Counts are
-  10, 15, 10, 8, 6, 9, 13, 11 and match what `generate_shards.py` seeded.
-
-Screenshot still needed: the `kubectl get pods -o wide` taken while the job was running.
-That one matters more than the file above. The captured file shows every pod at 25h old
-because the job finished a day ago, which proves the job completed but not that
-parallelism 4 was ever actually reached. The screenshot showing 4 pods Completed at 16s
-with the next 4 at 8s is the only thing that proves concurrency, and the rubric asks for
-exactly that.
+- `pods-and-job.txt`: Output showing all 8 pods Completed and node assignments.
+- `shard-results.txt`: Invalid row counts per shard collected via `kubectl logs`.
+- `q3_generate_shards.png`: Generating 8 CSV shards with invalid row counts.
+- `q3_build_validator.png`: `docker build -t shard-validator:v1 .` image build.
+- `q3_pods_wide.png`: `kubectl get pods -o wide` during execution proving `parallelism: 4`.
+- `q3_logs.png`: Invalid row counts retrieved across all 8 pods via `kubectl logs`.
 
 ## q4-deployment
 
-- `deployment-and-rollout.txt` has the Deployment at 2/2, the Service, both ReplicaSets
-  with the old one scaled to 0, `rollout status`, and `rollout history` showing revisions
-  1 and 2.
+The Deployment image was rebuilt as `spam-api:multistage-v2b` after the Q1 base-image fix
+(dropping `-slim`), so this evidence reflects the corrected Dockerfile. A new tag was used
+instead of reusing `multistage-v2` so that `kubectl set image` would trigger a real rollout
+(same image string = no diff = no rollout).
 
-Screenshots to add: the pod delete and its automatic replacement, the live `rollout
-status` progress lines, and `/healthz` returning `{"status":"ok","version":"v2"}`.
-
-The self-healing demo ran against ReplicaSet 77f4dcbc9b, before the rolling update. Every
-pod from that ReplicaSet has since been replaced, so the recreation cannot be seen in the
-cluster now and the screenshot is the only record of it.
+- `deployment-and-rollout.txt`: Log capturing deployment creation, service endpoints, and rollout history.
+- `q4_apply_service.png`: `service.yaml` applied, 2 replicas ready, and ClusterIP service setup.
+- `q4_build_v2.png`: `spam-api:multistage-v2b` docker build (corrected base image).
+- `q4_rollout_status.png`: `minikube image load`, `kubectl set image`, full `kubectl rollout
+  status` transcript, and `kubectl rollout history` showing 3 revisions.
+- `q4_curl_and_selfheal.png`: `/healthz` returning `{"status":"ok","version":"v2"}` through
+  the rebuilt image, plus pod deletion and the ReplicaSet automatically creating a fresh
+  replacement pod.
