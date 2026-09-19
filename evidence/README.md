@@ -34,7 +34,7 @@ The Deployment image was rebuilt as `spam-api:multistage-v2b` after the Q1 base-
 instead of reusing `multistage-v2` so that `kubectl set image` would trigger a real rollout
 (same image string = no diff = no rollout).
 
-- `deployment-and-rollout.txt`: Log capturing deployment creation, service endpoints, and rollout history.
+
 - `q4_apply_service.png`: `service.yaml` applied, 2 replicas ready, and ClusterIP service setup.
 - `q4_build_v2.png`: `spam-api:multistage-v2b` docker build (corrected base image).
 - `q4_rollout_status.png`: `minikube image load`, `kubectl set image`, full `kubectl rollout
