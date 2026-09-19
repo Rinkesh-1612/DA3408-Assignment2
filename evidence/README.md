@@ -7,7 +7,7 @@ Terminal output and screenshots backing each question.
 Both Dockerfiles use the same `python:3.12` base (no `-slim`), so the size difference
 comes entirely from what the multi-stage build excludes from its final image.
 
-- `image-sizes.txt`: Output showing naive (1.59GB) vs multistage (1.5GB) image sizes.
+
 - `q1_naive_build.png`: Single-stage Dockerfile build output and image size (1.59GB).
 - `q1_naive_curl.png`: Testing `/healthz` and `POST /predict` endpoints on naive container.
 - `q1_multistage.png`: Multi-stage build output, exact image size (1426.7 MiB / 1495960411
